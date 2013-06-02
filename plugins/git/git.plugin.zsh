@@ -206,7 +206,8 @@ alias glog='git log --oneline --decorate --graph'
 alias gloga='git log --oneline --decorate --graph --all'
 alias glp="_git_log_prettily"
 
-alias gm='git merge'
+# don't alias this; conflicts with GraphicsMagick
+#alias gm='git merge'
 alias gmom='git merge origin/$(git_main_branch)'
 alias gmt='git mergetool --no-prompt'
 alias gmtvim='git mergetool --no-prompt --tool=vimdiff'
