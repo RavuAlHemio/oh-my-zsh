@@ -3,18 +3,30 @@ typeset -A hashtocolornored
 hashtocolor=("0" "red" "1" "green" "2" "yellow" "3" "blue" "4" "magenta" "5" "cyan" "6" "white" "7" "red" "8" "green" "9" "yellow" "a" "blue" "b" "magenta" "c" "cyan" "d" "white" "e" "red" "f" "green")
 hashtocolornored=("0" "green" "1" "yellow" "2" "blue" "3" "magenta" "4" "cyan" "5" "white" "6" "green" "7" "yellow" "8" "blue" "9" "magenta" "a" "cyan" "b" "white" "c" "green" "d" "yellow" "e" "blue" "f" "magenta")
 
-#if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="green"; fi
+mymd5sum()
+{
+	if which md5sum &>/dev/null
+	then
+		md5sum "$@"
+	elif which md5 &>/dev/null
+	then
+		md5 "$@"
+	else
+		echo "0"
+	fi
+}
+
 if [ "$UID" -eq 0 ]
 then
 	NCOLOR="red"
 else
-	local namelast="$(echo $USER | md5sum | cut -c 32)"
+	local namelast="$(echo $USER | mymd5sum | cut -c 32)"
 	NCOLOR="$hashtocolornored[$namelast]"
 fi
 
 local hostfqdn="$(hostname)"
 local shorthost="${hostfqdn/.${hostfqdn#*.}/}"
-local hostlast="$(echo ${shorthost} | md5sum | cut -c 32)"
+local hostlast="$(echo ${shorthost} | mymd5sum | cut -c 32)"
 local hostclr="${fg[$hashtocolor[$hostlast]]}"
 
 local return_code="%(?..%{$fg[red]%}[%?]%{$reset_color%})"
